@@ -11,6 +11,7 @@ export default {
       },
       colors:{
         // for custom colors
+        "custom_primary_color" : "#0119ff" 
       }
     },
   },
