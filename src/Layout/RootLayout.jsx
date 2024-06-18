@@ -4,10 +4,10 @@ import Navbar from "../Components/Navbar/Navbar";
 
 const RootLayout = () => {
     return (
-        <div className="font-customText-afacad">
+        <div className="font-customText-afacad relative">
             {/* nav */}
-            <div className="max-w-full lg:max-w-[90%] mx-auto">
-            <Topbar></Topbar>
+            <div className="absolute w-full max-w-full">
+            {/* <Topbar></Topbar> */}
             <Navbar></Navbar>
             </div>
             <Outlet></Outlet>
