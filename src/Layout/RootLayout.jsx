@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Topbar from "../Components/Topbar/Topbar";
+import Navbar from "../Components/Navbar/Navbar";
 
 const RootLayout = () => {
     return (
@@ -7,6 +8,7 @@ const RootLayout = () => {
             {/* nav */}
             <div className="max-w-full lg:max-w-[90%] mx-auto">
             <Topbar></Topbar>
+            <Navbar></Navbar>
             </div>
             <Outlet></Outlet>
         </div>
