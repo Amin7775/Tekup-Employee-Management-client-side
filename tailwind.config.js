@@ -5,7 +5,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "customText-afacad": '"Afacad", sans-serif', 
+      },
+      colors:{
+        // for custom colors
+      }
+    },
   },
   plugins: [
     require('daisyui'),
