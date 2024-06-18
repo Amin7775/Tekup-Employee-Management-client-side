@@ -1,10 +1,11 @@
+import AboutUs from "./AboutUs/AboutUs";
 import HomeBanner from "./HomeBanner/HomeBanner";
 
 const Home = () => {
     return (
         <div>
             <HomeBanner></HomeBanner>
-            <p className="text-2xl ">This is home</p>
+            <AboutUs></AboutUs>
             
         </div>
     );
