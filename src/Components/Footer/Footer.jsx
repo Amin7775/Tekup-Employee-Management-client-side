@@ -3,18 +3,18 @@ const Footer = () => {
     <div className="bg-custom_grey ">
       <footer className="footer p-10 container mx-auto text-base-content">
         <nav>
-          <h6 className="footer-title text-2xl">Services</h6>
-          <a className="link link-hover text-lg">Branding</a>
-          <a className="link link-hover text-lg">Design</a>
-          <a className="link link-hover text-lg">Marketing</a>
-          <a className="link link-hover text-lg">Advertisement</a>
+          <h6 className="footer-title text-2xl">Quick Links</h6>
+          <a className="link link-hover text-lg">About Us</a>
+          <a className="link link-hover text-lg">Our Team</a>
+          <a className="link link-hover text-lg">Pricing Plans</a>
+          <a className="link link-hover text-lg">Contact Us</a>
         </nav>
         <nav>
-          <h6 className="footer-title text-2xl">Company</h6>
-          <a className="link link-hover text-lg">About us</a>
-          <a className="link link-hover text-lg">Contact</a>
-          <a className="link link-hover text-lg">Jobs</a>
-          <a className="link link-hover text-lg">Press kit</a>
+          <h6 className="footer-title text-2xl">Services</h6>
+          <a className="link link-hover text-lg">UI/UX Design</a>
+          <a className="link link-hover text-lg">Web Development</a>
+          <a className="link link-hover text-lg">Digital Marketing</a>
+          <a className="link link-hover text-lg">Cyber Security</a>
         </nav>
         <nav>
           <h6 className="footer-title text-2xl">Legal</h6>
