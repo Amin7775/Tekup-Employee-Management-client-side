@@ -11,7 +11,7 @@ const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 const Register = () => {
   const axiosPublic = useAxiosPublic();
   const fileInputRef = useRef(null);
-  const [success,setSuccess]=useState(true)
+  const [success, setSuccess] = useState(true);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,8 +33,8 @@ const Register = () => {
     //   bankAccountNo,
     //   imageFile,
     // });
-    
-//  first image hosting
+
+    //  first image hosting
     let imageUrl = "";
     if (file) {
       const formData = new FormData();
@@ -46,17 +46,17 @@ const Register = () => {
         });
         const data = await response.json();
         imageUrl = data.data.url;
-        setSuccess(true)
+        setSuccess(true);
       } catch (error) {
         console.error("Error uploading image:", error);
-        setSuccess(false)
+        setSuccess(false);
       }
     }
-    // now if imgURL data is success , send data to 
-    if(success){
-        console.log(imageUrl);
-    }else{
-        console.log('Error')
+    // now if imgURL data is success , send data to
+    if (success) {
+      console.log(imageUrl);
+    } else {
+      console.log("Error");
     }
   };
 
