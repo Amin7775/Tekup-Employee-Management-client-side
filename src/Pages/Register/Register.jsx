@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import logoimg from "./../../assets/images/logo/Logo.svg";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useRef, useState } from "react";
+import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 // image hosting
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
@@ -12,6 +14,7 @@ const Register = () => {
   const axiosPublic = useAxiosPublic();
   const fileInputRef = useRef(null);
   const [success, setSuccess] = useState(true);
+  const {createUser,updateUser,googleLogin} = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,6 +58,19 @@ const Register = () => {
     // now if imgURL data is success , send data to
     if (success) {
       console.log(imageUrl);
+      createUser(email,password)
+      .then(res=>{
+        updateUser(name,imageUrl)
+        .then(result=>{
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Registration Success",
+                showConfirmButton: false,
+                timer: 1500,
+              })
+        })
+      })
     } else {
       console.log("Error");
     }
@@ -62,7 +78,17 @@ const Register = () => {
 
   // google
   const handleGoogle = () => {
-    // console.log("clicked");
+    googleLogin()
+    .then(res=>{
+        
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Registration Success",
+            showConfirmButton: false,
+            timer: 1500,
+          })
+    })
   };
 
   return (

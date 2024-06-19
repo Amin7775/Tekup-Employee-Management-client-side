@@ -1,18 +1,42 @@
 import { Link } from "react-router-dom";
 import logoimg from "./../../assets/images/logo/Logo.svg";
+import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Login = () => {
+  const {googleLogin,loginUser} = useAuth()
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
     console.log(email,password)
+    loginUser(email,password)
+    .then(res=>{
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Login Success",
+        showConfirmButton: false,
+        timer: 1500,
+      })
+    })
   };
 
   // google
   const handleGoogle = () => {
-    // console.log("clicked");
+    googleLogin()
+    .then(res=>{
+        
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Login Success",
+            showConfirmButton: false,
+            timer: 1500,
+          })
+    })
   };
 
   return (
