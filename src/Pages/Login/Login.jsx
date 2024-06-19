@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logoimg from "./../../assets/images/logo/Logo.svg";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 
 const Login = () => {
   const {googleLogin,loginUser} = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,6 +23,9 @@ const Login = () => {
         showConfirmButton: false,
         timer: 1500,
       })
+      .then(()=>{
+        navigate(location?.state ? location?.state : '/')
+      })
     })
   };
 
@@ -35,6 +40,9 @@ const Login = () => {
             title: "Login Success",
             showConfirmButton: false,
             timer: 1500,
+          })
+          .then(()=>{
+            navigate(location?.state ? location?.state : '/')
           })
     })
   };

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logoimg from "./../../assets/images/logo/Logo.svg";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useRef, useState } from "react";
@@ -15,6 +15,8 @@ const Register = () => {
   const fileInputRef = useRef(null);
   const [success, setSuccess] = useState(true);
   const {createUser,updateUser,googleLogin} = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,6 +71,9 @@ const Register = () => {
                 showConfirmButton: false,
                 timer: 1500,
               })
+              .then(()=>{
+                navigate(location?.state ? location?.state : '/')
+              })
         })
       })
     } else {
@@ -87,6 +92,9 @@ const Register = () => {
             title: "Registration Success",
             showConfirmButton: false,
             timer: 1500,
+          })
+          .then(()=>{
+            navigate(location?.state ? location?.state : '/')
           })
     })
   };

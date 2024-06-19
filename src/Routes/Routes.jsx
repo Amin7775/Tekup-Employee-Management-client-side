@@ -4,6 +4,9 @@ import Home from "../Pages/Home/Home";
 import ContactUs from "../Pages/ContactUs/ContactUs";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
+import Dashboard from "../Layout/Dashboard";
+import PrivateRoute from "./PrivateRoute";
+import AllHome from "../Pages/Dashboard/Shared/AllHome/AllHome";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +31,17 @@ const router = createBrowserRouter([
         }
       ]
     },
+    {
+      path:'dashboard',
+      element:<PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
+      children:[
+        // any user route
+        {
+          path: '/dashboard/home',
+          element:<AllHome></AllHome>
+        }
+      ]
+    }
   ]);
 
 

@@ -15,6 +15,9 @@ const Navbar = () => {
       <li>
         <NavLink to={"/contact-us"}>Contact Us</NavLink>
       </li>
+      {
+        user && <li><NavLink to={"/dashboard/home"}>Dashboard</NavLink></li>
+      }
     </>
   );
 
@@ -108,11 +111,19 @@ const Navbar = () => {
             </ul>
           )}
         </div>
-        <Link to={"/login"}>
-          <p className="btn bg-custom_primary_color text-white px-6 h-full text-lg">
-            Login
-          </p>
-        </Link>
+        {user ? (
+          <Link to={"/"}>
+            <p onClick={handleLogout} className="btn bg-custom_primary_color text-white px-6 h-full text-lg">
+              Logout
+            </p>
+          </Link>
+        ) : (
+          <Link to={"/login"}>
+            <p className="btn bg-custom_primary_color text-white px-6 h-full text-lg">
+              Login
+            </p>
+          </Link>
+        )}
       </div>
     </div>
   );
