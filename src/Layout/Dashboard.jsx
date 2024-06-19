@@ -19,7 +19,7 @@ const Dashboard = () => {
               className="flex items-center gap-1"
               to={"/dashboard/home"}
             >
-              <FaHome /> Home
+              <FaHome /> Dashboard Home
             </NavLink>
           </li>
         </ul>

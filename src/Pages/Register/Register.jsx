@@ -4,6 +4,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useRef, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
+import moment from "moment";
 
 // image hosting
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
@@ -14,10 +15,11 @@ const Register = () => {
   const axiosPublic = useAxiosPublic();
   const fileInputRef = useRef(null);
   const [success, setSuccess] = useState(true);
-  const {createUser,updateUser,googleLogin} = useAuth()
-  const location = useLocation()
-  const navigate = useNavigate()
-
+  const { createUser, updateUser, googleLogin } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  let CreatedTime = moment().format("MMMM Do YYYY, h:mm:ss a");
+  // console.log(CreatedTime)
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -27,6 +29,7 @@ const Register = () => {
     const name = form.name.value;
     const designation = form.designation.value;
     const salary = form.salary.value;
+    const bank_account_no = form.bank_account_no.value;
     const file = fileInputRef.current.files[0];
     // console.log({
     //   email,
@@ -60,21 +63,43 @@ const Register = () => {
     // now if imgURL data is success , send data to
     if (success) {
       console.log(imageUrl);
-      createUser(email,password)
-      .then(res=>{
-        updateUser(name,imageUrl)
-        .then(result=>{
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Registration Success",
-                showConfirmButton: false,
-                timer: 1500,
-              })
-              .then(()=>{
-                navigate(location?.state ? location?.state : '/')
-              })
-        })
+      createUser(email, password).then((res) => {
+        updateUser(name, imageUrl).then((result) => {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Registration Success",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            const userInfo = {
+              name,
+              email,
+              role,
+              photoURL: imageUrl,
+              bank_account_no,
+              salary,
+              designation,
+              isVerfied: false,
+              isFired: false,
+              CreatedTime,
+            };
+            axiosPublic.post("/users", userInfo).then((res) => {
+              console.log(res.data);
+              // navigate(location?.state ? location?.state : '/')
+            });
+          });
+        });
+      })
+      .catch(error=>{
+        Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Registration failed",
+            text: `${error.message}`,
+            showConfirmButton: false,
+            timer: 1500,
+          })
       })
     } else {
       console.log("Error");
@@ -83,18 +108,40 @@ const Register = () => {
 
   // google
   const handleGoogle = () => {
-    googleLogin()
-    .then(res=>{
-        
+    googleLogin().then((res) => {
+      // console.log(res?.user)
+      const googleUser = res?.user;
+      const userInfo = {
+        name: googleUser?.displayName,
+        email: googleUser?.email,
+        role: "Employee",
+        photoURL: googleUser?.photoURL,
+        bank_account_no: "4242424242424242",
+        salary: "20000",
+        designation: "Developer",
+        isVerfied: false,
+        isFired: false,
+        CreatedTime,
+      };
+      axiosPublic.post("/users", userInfo).then((res) => {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Registration Success",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          navigate(location?.state ? location?.state : "/");
+        });
+      });
+    }).catch(error=>{
         Swal.fire({
             position: "center",
-            icon: "success",
-            title: "Registration Success",
+            icon: "error",
+            title: "Registration failed",
+            text: `${error.message}`,
             showConfirmButton: false,
             timer: 1500,
-          })
-          .then(()=>{
-            navigate(location?.state ? location?.state : '/')
           })
     })
   };
