@@ -1,14 +1,63 @@
 import { Link } from "react-router-dom";
 import logoimg from "./../../assets/images/logo/Logo.svg";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useRef, useState } from "react";
+
+// image hosting
+const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+// console.log(imageHostingKey)
+const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 
 const Register = () => {
-  const handleSubmit = (e) => {
+  const axiosPublic = useAxiosPublic();
+  const fileInputRef = useRef(null);
+  const [success,setSuccess]=useState(true)
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
     const role = form.role.value;
-    console.log(email, password, role);
+    const name = form.name.value;
+    const designation = form.designation.value;
+    const salary = form.salary.value;
+    const file = fileInputRef.current.files[0];
+    // console.log({
+    //   email,
+    //   password,
+    //   role,
+    //   name,
+    //   designation,
+    //   salary,
+    //   bankAccountNo,
+    //   imageFile,
+    // });
+    
+//  first image hosting
+    let imageUrl = "";
+    if (file) {
+      const formData = new FormData();
+      formData.append("image", file);
+      try {
+        const response = await fetch(imageHostingApi, {
+          method: "POST",
+          body: formData,
+        });
+        const data = await response.json();
+        imageUrl = data.data.url;
+        setSuccess(true)
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        setSuccess(false)
+      }
+    }
+    // now if imgURL data is success , send data to 
+    if(success){
+        console.log(imageUrl);
+    }else{
+        console.log('Error')
+    }
   };
 
   // google
@@ -160,13 +209,17 @@ const Register = () => {
                 />
               </div>
             </div>
-            {/* Bank account no */}
+            {/* image */}
             <div>
               <label className="block text-base font-medium leading-6 text-gray-900 dark:text-gray-200 ">
                 Image
               </label>
               <div className="mt-2">
-              <input type="file" className="file-input file-input-bordered w-full " />
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  className="file-input file-input-bordered w-full "
+                />
               </div>
             </div>
           </div>
