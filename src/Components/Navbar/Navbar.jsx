@@ -50,7 +50,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link>
+        <Link to={'/login'}>
         <p className="btn bg-custom_primary_color text-white px-6 h-full text-lg">Login</p>
         </Link>
       </div>
