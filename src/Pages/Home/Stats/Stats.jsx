@@ -14,7 +14,9 @@ const Stats = () => {
             end={26}
             duration={5}
             suffix=" +"
-          />
+          >
+              {({ countUpRef }) => <span ref={countUpRef} />}
+            </CountUp>
         </h1>
         <p className="text-xl md:text-2xl font-medium">Years of Experience</p>
       </div>
@@ -29,7 +31,9 @@ const Stats = () => {
             end={730}
             duration={5}
             suffix=" +"
-          />
+          >
+          {({ countUpRef }) => <span ref={countUpRef} />}
+          </CountUp>
         </h1>
         <p className="text-xl md:text-2xl font-medium">Successful Projects</p>
       </div>
@@ -44,7 +48,9 @@ const Stats = () => {
             end={312}
             duration={5}
             suffix=" +"
-          />
+          >
+          {({ countUpRef }) => <span ref={countUpRef} />}
+          </CountUp>
         </h1>
         <p className="text-xl md:text-2xl font-medium">Client Reviews</p>
       </div>
