@@ -15,7 +15,7 @@ const Testimonials = () => {
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-center mb-16">
         Testimonials
       </h1>
-      <div className="container mx-auto md:max-h-[500px] bg-[#fbfbfa] px-2 md:px-0 drop-shadow-md overflow-hidden border">
+      <div className="container mx-auto md:max-h-[500px] bg-[#fbfbfa] px-2 md:px-0 drop-shadow-md overflow-hidden border cursor-pointer">
         <Slider {...settings}>
           {/* 1 */}
           <div className="pb-2">
