@@ -7,6 +7,7 @@ import Register from "../Pages/Register/Register";
 import Dashboard from "../Layout/Dashboard";
 import PrivateRoute from "./PrivateRoute";
 import AllHome from "../Pages/Dashboard/Shared/AllHome/AllHome";
+import EmployeeList from "../Pages/Dashboard/HR/EmployeeList/EmployeeList";
 
 const router = createBrowserRouter([
     {
@@ -37,8 +38,13 @@ const router = createBrowserRouter([
       children:[
         // any user route
         {
-          path: '/dashboard/home',
+          path: 'home',
           element:<AllHome></AllHome>
+        },
+        // HR Route
+        {
+          path:"employee-list",
+          element:<EmployeeList></EmployeeList>
         }
       ]
     }

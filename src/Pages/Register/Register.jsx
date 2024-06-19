@@ -86,7 +86,7 @@ const Register = () => {
             };
             axiosPublic.post("/users", userInfo).then((res) => {
               console.log(res.data);
-              // navigate(location?.state ? location?.state : '/')
+              navigate(location?.state ? location?.state : '/')
             });
           });
         });

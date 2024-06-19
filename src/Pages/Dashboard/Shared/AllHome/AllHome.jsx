@@ -3,7 +3,7 @@ import dashboardImg from './../../../../assets/images/dashboard/img1.png'
 
 const AllHome = () => {
     const {user} = useAuth()
-    console.log(user)
+    // console.log(user)
     return (
         <div className="flex flex-col items-center justify-center h-full gap-0 ">
             <img src={dashboardImg} alt="" />
