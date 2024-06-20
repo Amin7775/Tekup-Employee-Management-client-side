@@ -211,7 +211,7 @@ const EmployeeList = () => {
               {/* checkout form */}
               <div className="mt-5">
               <Elements stripe={stripePromise}>
-              <CheckoutForm employeeName={selectedEmployee.name} salary={selectedEmployee.salary} bank_account_no={selectedEmployee.bank_account_no} selectedMonth={selectedMonth} selectedYear={selectedYear}></CheckoutForm>
+              <CheckoutForm employeeName={selectedEmployee?.name} salary={selectedEmployee?.salary} bank_account_no={selectedEmployee?.bank_account_no} selectedMonth={selectedMonth} selectedYear={selectedYear} employeeId={selectedEmployee?._id} employeeEmail={selectedEmployee?.email} refetch={refetch} setModalOpen={setModalOpen}></CheckoutForm>
               </Elements>
               </div>
             </div>
