@@ -5,7 +5,7 @@ const useAllUsers = () => {
     // tan stack query 
     const axiosSecure = useAxiosSecure();
     const {refetch, data: users = [],isLoading : usersLoading } = useQuery({
-        queryKey: ['cart'], 
+        queryKey: ['users'], 
         queryFn: async () =>{
             const res = await axiosSecure.get(`/users`)
             return res.data;

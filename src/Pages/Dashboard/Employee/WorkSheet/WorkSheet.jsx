@@ -2,9 +2,17 @@ import { useState } from "react";
 import DashboardHeader from "../../../../Components/DashBoardHeader/DashboardHeader";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import useAuth from "../../../../hooks/useAuth";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import useWorkData from "../../../../hooks/useWorkData";
 
 const WorkSheet = () => {
+  const [worksData, refetch] = useWorkData();
   const [selectedTask, setSelectedTask] = useState("");
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const formTasks = [
     "Sales",
     "Support",
@@ -39,7 +47,7 @@ const WorkSheet = () => {
     const workingHour = form.workingHour.value;
     const formatDateFn = (date) => {
       const selectedDate = new Date(date);
-      console.log("inside");
+
       return (
         selectedDate.getDate() +
         "/" +
@@ -48,19 +56,92 @@ const WorkSheet = () => {
         selectedDate.getFullYear()
       );
     };
+    const getMonth = (date) => {
+      const selectedDate = new Date(date);
+      return parseInt(selectedDate.getMonth() + 1);
+    };
+    const getYear = (date) => {
+      const selectedDate = new Date(date);
+      return parseInt(selectedDate.getFullYear());
+    };
     const date = formatDateFn(startDate);
-    console.log(task, workingHour, date);
+    const monthOnly = getMonth(startDate);
+    const yearOnly = getYear(startDate);
+    const workInfo = {
+      task,
+      workingHour: parseInt(workingHour),
+      date: date,
+      monthOnly: parseInt(monthOnly),
+      yearOnly: parseInt(yearOnly),
+      employeeEmail: user?.email,
+    };
+    console.log(workInfo);
+    axiosSecure
+      .post("/works", workInfo)
+      .then((res) => {
+        if (res.data?.insertedId) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Your Work Has Been Submitted",
+            showConfirmButton: true,
+          })
+          .then(()=>{
+            refetch()
+          })
+        } else {
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Please Try Again Later",
+            showConfirmButton: true,
+          });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Please Try Again Later",
+          text: error.message,
+          showConfirmButton: true,
+        });
+      });
   };
 
-  //   const handleChangeDates = (date) =>{
-  //     const res = formatDateFn(date)
-  //     console.log(res)
-  //   }
+  //   table
+  const columns = [
+    {
+      accessorKey: "_id",
+      header: "ID",
+      cell: (props) => <p>{props.row.index + 1}</p>,
+    },
+    {
+      accessorKey: "task",
+      header: "Task",
+      cell: (props) => <p>{props.getValue()}</p>,
+    },
+    {
+      accessorKey: "workingHour",
+      header: "Working Hour",
+      cell: (props) => <p>{props.getValue()}</p>,
+    },
+    {
+      accessorKey: "date",
+      header: "Date",
+      cell: (props) => <p>{props.getValue()}</p>,
+    },
+  ];
+  const table = useReactTable({
+    data: worksData,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
   return (
     <div className="min-h-screen">
       <DashboardHeader text={"Work Sheet"}></DashboardHeader>
       {/* container */}
-      <div className="grid grid-cols-1">
+      <div className="grid grid-cols-1 gap-14">
         {/* form */}
         <div className="bg-custom_grey py-6 px-5 md:px-10">
           <form
@@ -101,7 +182,7 @@ const WorkSheet = () => {
                 Select Date:
               </label>
               <DatePicker
-              className="py-2.5 px-2 rounded-lg border-2 "
+                className="py-2.5 px-2 rounded-lg border-2 "
                 name="startDate"
                 selected={startDate}
                 selectsStart
@@ -121,7 +202,35 @@ const WorkSheet = () => {
           </form>
         </div>
         {/* table */}
-        <div></div>
+        <div>
+          <div className="overflow-auto w-full">
+            <table className="table w-full border">
+              <thead className="w-full">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr className="bg-custom_grey text-lg" key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th key={header.id}>{header.column.columnDef.header}</th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.map((row) => (
+                  <tr key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );
