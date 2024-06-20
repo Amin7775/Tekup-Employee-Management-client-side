@@ -161,10 +161,10 @@ const EmployeeList = () => {
   return (
     <div>
       <div className="overflow-auto w-full">
-        <table className="table w-full">
+        <table className="table w-full border">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
+              <tr className="bg-custom_grey text-lg" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <th key={header.id}>{header.column.columnDef.header}</th>
                 ))}

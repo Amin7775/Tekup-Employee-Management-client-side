@@ -112,7 +112,7 @@ const CheckoutForm = ({
       salary: salary,
       bank_account_no: bank_account_no,
       paymentMonth: selectedMonth,
-      paymentYear: selectedYear,
+      paymentYear: parseInt(selectedYear),
       monthNumber: monthNo,
     };
     // console.log(payment);
