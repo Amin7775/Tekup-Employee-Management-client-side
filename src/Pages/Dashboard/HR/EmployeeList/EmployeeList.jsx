@@ -48,7 +48,7 @@ const EmployeeList = () => {
     }
     setMonthNo(getMonthNumber(selectedMonth))
   },[selectedMonth])
-  console.log(monthNo)
+  // console.log(monthNo)
   //   handleDetails
   const handleDetails = (item) => {
     console.log(item.row.original);
@@ -75,6 +75,11 @@ const EmployeeList = () => {
   // };
 
   const columns = [
+    {
+      accessorKey: "_id",
+      header: "ID",
+      cell: (props) => <p>{props.row.index + 1}</p>,
+    },
     {
       accessorKey: "name",
       header: "Name",

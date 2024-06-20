@@ -6,6 +6,7 @@ import {
 // import usePaymentHistory from "../../../../hooks/usePaymentHistory";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import DashboardHeader from "../../../../Components/DashBoardHeader/DashboardHeader";
 
 const PaymentHistory = () => {
   const [currentPage, setCuerrentPage] = useState(0);
@@ -65,7 +66,8 @@ const PaymentHistory = () => {
     getCoreRowModel: getCoreRowModel(),
   });
   return (
-    <div className="max-w-full px-4 sm:px-6 lg:px-8">
+    <div className="">
+      <DashboardHeader text={"Payment History"}></DashboardHeader>
       <div className="overflow-auto w-full">
         <table className="table w-full border">
           <thead className="w-full">

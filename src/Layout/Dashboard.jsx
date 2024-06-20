@@ -15,10 +15,7 @@ const Dashboard = () => {
           {/* conditional routes based on admin*/}
 
           <li className="px-3 py-2">
-            <NavLink
-              className="flex items-center gap-1"
-              to={"/dashboard/home"}
-            >
+            <NavLink className="flex items-center gap-1" to={"/dashboard/home"}>
               <FaHome /> Dashboard Home
             </NavLink>
           </li>
@@ -38,10 +35,18 @@ const Dashboard = () => {
               <FaHome /> Payment History - Employee
             </NavLink>
           </li>
+          <li className="px-3 py-2">
+            <NavLink
+              className="flex items-center gap-1"
+              to={"/dashboard/work-sheet"}
+            >
+              <FaHome /> Work Sheet - Employee
+            </NavLink>
+          </li>
         </ul>
       </div>
       {/* routes outlet */}
-      <div className="max-w-full px-5 lg:px-10 py-10 flex-1">
+      <div className="max-w-full px-5 lg:px-10 py-8 md:py-10 lg:py-14 flex-1">
         <Outlet></Outlet>
       </div>
     </div>
