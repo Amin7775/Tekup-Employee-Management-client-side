@@ -7,7 +7,7 @@ import useAllUsers from "../../../../hooks/useAllUsers";
 import { RxCross1 } from "react-icons/rx";
 import { MdDone } from "react-icons/md";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -19,8 +19,9 @@ const EmployeeList = () => {
   const axiosSecure = useAxiosSecure();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('January');
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [monthNo,setMonthNo]=useState(null)
   //   console.log(users);
   const months = [
     "January",
@@ -36,6 +37,18 @@ const EmployeeList = () => {
     "November",
     "December",
   ];
+  
+  useEffect(()=>{
+    function getMonthNumber(selectedMonth) {
+      const monthIndex = months.indexOf(selectedMonth);
+      if (monthIndex === -1) {
+        throw new Error("Invalid month name");
+      }
+      return monthIndex + 1; // Adding 1 because months are 1-indexed
+    }
+    setMonthNo(getMonthNumber(selectedMonth))
+  },[selectedMonth])
+  console.log(monthNo)
   //   handleDetails
   const handleDetails = (item) => {
     console.log(item.row.original);
@@ -185,6 +198,7 @@ const EmployeeList = () => {
             <p className="pb-4 text-lg font-medium">
               Bank Account No: {selectedEmployee.bank_account_no}
             </p>
+            <label htmlFor="month" className="block mb-2">Select Month:</label>
             <select
                 id="month"
                 className="input input-bordered w-full"
@@ -197,7 +211,7 @@ const EmployeeList = () => {
                   <option key={index} value={month}>{month}</option>
                 ))}
               </select>
-              <div className="mb-4">
+              <div className=" mt-2 mb-4">
               <label htmlFor="year" className="block mb-2">Enter Year:</label>
               <input
                 type="number"
@@ -211,7 +225,7 @@ const EmployeeList = () => {
               {/* checkout form */}
               <div className="mt-5">
               <Elements stripe={stripePromise}>
-              <CheckoutForm employeeName={selectedEmployee?.name} salary={selectedEmployee?.salary} bank_account_no={selectedEmployee?.bank_account_no} selectedMonth={selectedMonth} selectedYear={selectedYear} employeeId={selectedEmployee?._id} employeeEmail={selectedEmployee?.email} refetch={refetch} setModalOpen={setModalOpen}></CheckoutForm>
+              <CheckoutForm employeeName={selectedEmployee?.name} salary={selectedEmployee?.salary} bank_account_no={selectedEmployee?.bank_account_no} selectedMonth={selectedMonth} selectedYear={selectedYear} employeeId={selectedEmployee?._id} employeeEmail={selectedEmployee?.email} refetch={refetch} setModalOpen={setModalOpen} monthNo={monthNo}></CheckoutForm>
               </Elements>
               </div>
             </div>

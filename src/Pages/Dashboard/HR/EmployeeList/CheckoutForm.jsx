@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import useAuth from "../../../../hooks/useAuth";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../../../hooks/useAxiosPublic";
 
 const CheckoutForm = ({
   employeeName,
@@ -13,6 +14,7 @@ const CheckoutForm = ({
   employeeId,
   employeeEmail,
   refetch,
+  setModalOpen,monthNo
 }) => {
   const [clientSecret, setClientSecret] = useState("");
   const stripe = useStripe();
@@ -21,6 +23,7 @@ const CheckoutForm = ({
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const [transactionId, setTransactionId] = useState("");
+  const axiosPublic = useAxiosPublic()
 
   // console.log(selectedMonth, selectedYear);
   //   console.log(totalSalary)
@@ -60,7 +63,7 @@ const CheckoutForm = ({
       // console.log("[error]", error);
       setError(error.message);
     } else {
-      // console.log("[PaymentMethod]", paymentMethod);
+      console.log("[PaymentMethod]", paymentMethod);
       setError("");
     }
 
@@ -84,7 +87,10 @@ const CheckoutForm = ({
         title: "OOOPS! Try Again Later.",
         showConfirmButton: false,
         timer: 2500,
-      });
+      })
+      .then(()=>{
+        setModalOpen(false)
+      })
     } else {
       // console.log("payment intent", paymentIntent);
       if (paymentIntent.status === "succeeded") {
@@ -94,9 +100,10 @@ const CheckoutForm = ({
 
     // save the payment in db
     const paidFor = `${selectedMonth} ${selectedYear}`;
+    let transactionIDs = paymentIntent.id;
     // console.log(paidFor);
     const payment = {
-      transactionId: transactionId,
+      transactionId: transactionIDs,
       paidBy: user?.email,
       paidFor: paidFor,
       employeeId: employeeId,
@@ -104,10 +111,13 @@ const CheckoutForm = ({
       employeeEmail: employeeEmail,
       salary: salary,
       bank_account_no: bank_account_no,
+      paymentMonth: selectedMonth,
+      paymentYear: selectedYear,
+      monthNumber: monthNo,
     };
     // console.log(payment);
 
-    axiosSecure.post('/payments', payment)
+    axiosPublic.post('/payments', payment)
     .then(res => {
       // console.log("after axios");
       // console.log(res.data);
@@ -120,17 +130,18 @@ const CheckoutForm = ({
           showConfirmButton: true,
         });
         refetch(); // Assuming refetch is a function to refresh the data
-        
+        setModalOpen(false)
       }
     })
     .catch(error => {
-      if (error.response.status === 400) {
+      if (error.response?.status === 400) {
         Swal.fire({
           position: "center",
           icon: "error",
           title: error.response.data.message,
           showConfirmButton: true,
         });
+        setModalOpen(false)
         // console.log("inside error")
       } else{
         Swal.fire({
@@ -140,6 +151,7 @@ const CheckoutForm = ({
           showConfirmButton: false,
           timer: 2500,
         });
+        setModalOpen(false)
       }
     });
 };

@@ -30,6 +30,14 @@ const Dashboard = () => {
               <FaHome /> Employee List - HR
             </NavLink>
           </li>
+          <li className="px-3 py-2">
+            <NavLink
+              className="flex items-center gap-1"
+              to={"/dashboard/payment-history"}
+            >
+              <FaHome /> Payment History - Employee
+            </NavLink>
+          </li>
         </ul>
       </div>
       {/* routes outlet */}
