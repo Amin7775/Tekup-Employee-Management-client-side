@@ -9,6 +9,10 @@ import { MdDone } from "react-icons/md";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useState } from "react";
 import CheckoutForm from "./CheckoutForm";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+// stripe key
+const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_PK)
 
 const EmployeeList = () => {
   const [users, refetch] = useAllUsers();
@@ -49,13 +53,13 @@ const EmployeeList = () => {
     setSelectedEmployee(employee);
     setModalOpen(true);
   };
-  const handlePaySubmit = () => {
-    // Handle the payment logic here, e.g., update the database, etc.
-    console.log(
-      `Paying ${selectedEmployee.salary} to ${selectedEmployee.name} for ${selectedMonth}/${selectedYear}`
-    );
-    setModalOpen(false);
-  };
+  // const handlePaySubmit = () => {
+  //   Handle the payment logic here, e.g., update the database, etc.
+  //   console.log(
+  //     `Paying ${selectedEmployee.salary} to ${selectedEmployee.name} for ${selectedMonth}/${selectedYear}`
+  //   );
+  //   setModalOpen(false);
+  // };
 
   const columns = [
     {
@@ -204,15 +208,19 @@ const EmployeeList = () => {
                 max={new Date().getFullYear()}
               />
               {/* checkout form */}
+              <div className="mt-5">
+              <Elements stripe={stripePromise}>
               <CheckoutForm employeeName={selectedEmployee.name} salary={selectedEmployee.salary} bank_account_no={selectedEmployee.bank_account_no} selectedMonth={selectedMonth} selectedYear={selectedYear}></CheckoutForm>
+              </Elements>
+              </div>
             </div>
             <div className="modal-action">
               <button className="btn" onClick={() => setModalOpen(false)}>
                 Close
               </button>
-              <button className="btn btn-primary" onClick={handlePaySubmit}>
+              {/* <button className="btn btn-primary" onClick={handlePaySubmit}>
                 Pay
-              </button>
+              </button> */}
             </div>
           </div>
         </dialog>
