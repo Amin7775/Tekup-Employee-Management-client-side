@@ -1,5 +1,5 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import useAuth from '../../../../hooks/useAuth';
 import Swal from 'sweetalert2';
@@ -10,10 +10,19 @@ const CheckoutForm = ({employeeName,salary,bank_account_no,selectedMonth,selecte
   const elements = useElements();
   const [error,setError]=useState('')
   const axiosSecure = useAxiosSecure()
-  const totalSalary = salary;
   const {user} = useAuth()
   const [transactionId,setTransactionId] = useState('')
+  console.log(selectedMonth,selectedYear)
 //   console.log(totalSalary)
+// payment intent
+useEffect(()=>{
+    if(salary > 0){
+      axiosSecure.post('/create-payment-intent', {salary})
+    .then(res => {
+      setClientSecret(res.data.clientSecret)
+    })
+    }
+  },[axiosSecure,salary])
 // handle submit
 const handleSubmit = async (event) => {
     event.preventDefault();

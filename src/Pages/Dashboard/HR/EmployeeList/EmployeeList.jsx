@@ -189,6 +189,7 @@ const EmployeeList = () => {
                 id="month"
                 className="input input-bordered w-full"
                 value={selectedMonth}
+                required
                 onChange={(e) => setSelectedMonth(e.target.value)}
               >
                 <option value="" disabled>Select Month</option>
