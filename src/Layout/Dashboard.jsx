@@ -41,7 +41,7 @@ const Dashboard = () => {
         </ul>
       </div>
       {/* routes outlet */}
-      <div className="px-10 py-10 flex-1">
+      <div className="max-w-full px-5 lg:px-10 py-10 flex-1">
         <Outlet></Outlet>
       </div>
     </div>

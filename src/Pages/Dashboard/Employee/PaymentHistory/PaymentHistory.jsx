@@ -1,11 +1,42 @@
-import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import usePaymentHistory from "../../../../hooks/usePaymentHistory";
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+// import usePaymentHistory from "../../../../hooks/usePaymentHistory";
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 
 const PaymentHistory = () => {
-  const [payments, refetch] = usePaymentHistory();
-  console.log(payments);
-
+  const [currentPage, setCuerrentPage] = useState(0);
+//   const [payments, refetch] = usePaymentHistory();
+  const [payments,setPayment] = useState([])
+  const axiosSecure = useAxiosSecure();
+  //   pagination
+  const paymentPerPage = 5;
+  const [paymentCount, setPaymentCount] = useState(0);
+  //   console.log(payments);
+  useEffect(() => {
+    axiosSecure.get(`/paymentCount`).then((res) => {
+      setPaymentCount(res.data.count);
+    });
+  }, [currentPage]);
+  const numberOfPages = Math.ceil(paymentCount / paymentPerPage);
+  const pages = [...Array(numberOfPages).keys()];
+  //   console.log(paymentCount, pages);
+  useEffect(()=>{
+    axiosSecure.get(`/payment-history?page=${currentPage}`)
+    .then(res=>{
+        setPayment(res.data)
+    })
+  },[currentPage])
+  //   table
   const columns = [
+    {
+      accessorKey: "_id",
+      header: "ID",
+      cell: (props) => <p>{props.row.index + 1}</p>,
+    },
     {
       accessorKey: "paymentMonth",
       header: "Month",
@@ -34,7 +65,7 @@ const PaymentHistory = () => {
     getCoreRowModel: getCoreRowModel(),
   });
   return (
-    <div>
+    <div className="max-w-full px-4 sm:px-6 lg:px-8">
       <div className="overflow-auto w-full">
         <table className="table w-full border">
           <thead className="w-full">
@@ -58,8 +89,24 @@ const PaymentHistory = () => {
             ))}
           </tbody>
         </table>
+        {/* pagination btn */}
+        <div className="flex md:justify-center my-5 flex-wrap gap-4">
+          {pages.length > 1 &&
+            pages?.map((page, id) => (
+              <button
+                onClick={() => setCuerrentPage(page)}
+                className={
+                  currentPage == page
+                    ? `selected bg-custom_Dark text-white drop-shadow-sm px-2 py-1 text-sm`
+                    : `bg-gray-300 drop-shadow-sm px-2 py-1 text-sm`
+                }
+                key={id}
+              >
+                {page+1}
+              </button>
+            ))}
+        </div>
       </div>
-      
     </div>
   );
 };
