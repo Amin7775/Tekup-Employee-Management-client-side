@@ -1,13 +1,50 @@
 import { FaLocationPin } from "react-icons/fa6";
 import { IoMailSharp } from "react-icons/io5";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import moment from "moment";
+import Swal from "sweetalert2";
 
 const ContactUsForm = () => {
+  const axiosPublic = useAxiosPublic()
+  let contactTime = moment().format("MMMM Do YYYY, h:mm:ss a");
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const form = e.target;
     const email = form.email.value;
     const message = form.message.value;
-    console.log(email,message)
+    // console.log(email,message)
+    const contactUsInfo={
+      email,
+      message,
+      time: contactTime,
+    }
+    axiosPublic.post("/contactUs",contactUsInfo)
+    .then(res=>{
+      if (res.data?.insertedId) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Your Message Has Been Submitted",
+          showConfirmButton: true,
+        })
+      }else{
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Please Try Again Later",
+          showConfirmButton: true,
+        });
+      }
+    }).catch(error=>{
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Please Try Again Later",
+        text: error.message,
+        showConfirmButton: true,
+      });
+    })
   }
 
   return (

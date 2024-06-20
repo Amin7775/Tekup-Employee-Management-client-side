@@ -43,6 +43,14 @@ const Dashboard = () => {
               <FaHome /> Work Sheet - Employee
             </NavLink>
           </li>
+          <li className="px-3 py-2">
+            <NavLink
+              className="flex items-center gap-1"
+              to={"/dashboard/contact-us-messages"}
+            >
+              <FaHome /> Contact Us Messages - Admin
+            </NavLink>
+          </li>
         </ul>
       </div>
       {/* routes outlet */}

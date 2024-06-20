@@ -10,6 +10,7 @@ import AllHome from "../Pages/Dashboard/Shared/AllHome/AllHome";
 import EmployeeList from "../Pages/Dashboard/HR/EmployeeList/EmployeeList";
 import PaymentHistory from "../Pages/Dashboard/Employee/PaymentHistory/PaymentHistory";
 import WorkSheet from "../Pages/Dashboard/Employee/WorkSheet/WorkSheet";
+import ContactUsMessages from "../Pages/Dashboard/Admin/ContactUsMessages/ContactUsMessages";
 
 const router = createBrowserRouter([
     {
@@ -56,6 +57,11 @@ const router = createBrowserRouter([
         {
           path:"employee-list",
           element:<EmployeeList></EmployeeList>
+        },
+        // Admin Route
+        {
+          path:"contact-us-messages",
+          element:<ContactUsMessages></ContactUsMessages>
         }
       ]
     }
