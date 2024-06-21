@@ -51,6 +51,14 @@ const Dashboard = () => {
               <FaHome /> Contact Us Messages - Admin
             </NavLink>
           </li>
+          <li className="px-3 py-2">
+            <NavLink
+              className="flex items-center gap-1"
+              to={"/dashboard/progress"}
+            >
+              <FaHome /> Work Progress - HR
+            </NavLink>
+          </li>
         </ul>
       </div>
       {/* routes outlet */}
