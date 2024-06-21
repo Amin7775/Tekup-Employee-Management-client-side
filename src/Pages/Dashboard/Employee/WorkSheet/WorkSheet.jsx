@@ -35,7 +35,7 @@ const WorkSheet = () => {
     "IT Support",
     "Maintenance",
   ];
-  console.log(selectedTask);
+  // console.log(selectedTask);
   //   react date picker
   const [startDate, setStartDate] = useState(new Date());
 
@@ -74,8 +74,9 @@ const WorkSheet = () => {
       monthOnly: parseInt(monthOnly),
       yearOnly: parseInt(yearOnly),
       employeeEmail: user?.email,
+      employeeName: user?.displayName,
     };
-    console.log(workInfo);
+    // console.log(workInfo);
     axiosSecure
       .post("/works", workInfo)
       .then((res) => {
