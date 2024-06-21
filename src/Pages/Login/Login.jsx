@@ -6,7 +6,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import moment from "moment";
 
 const Login = () => {
-  const { googleLogin, loginUser } = useAuth();
+  const { googleLogin, loginUser,logOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
@@ -18,17 +18,42 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
     console.log(email, password);
-    loginUser(email, password)
+    axiosPublic
+      .get(`/users/isFired/${email}`)
       .then((res) => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Login Success",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          navigate(location?.state ? location?.state : "/");
-        });
+        if (res.data?.isFired) {
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Login failed",
+            text: "You have been fired",
+            showConfirmButton: true,
+          });
+          return;
+        } else {
+          loginUser(email, password)
+            .then((res) => {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Login Success",
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                navigate(location?.state ? location?.state : "/");
+              });
+            })
+            .catch((error) => {
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Login failed",
+                text: `${error.message}`,
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            });
+        }
       })
       .catch((error) => {
         Swal.fire({
@@ -42,34 +67,63 @@ const Login = () => {
       });
   };
 
-  // google
   const handleGoogle = () => {
     googleLogin()
       .then((res) => {
         const googleUser = res?.user;
-        const userInfo = {
-          name: googleUser?.displayName,
-          email: googleUser?.email,
-          role: "Employee",
-          photoURL: googleUser?.photoURL,
-          bank_account_no: "4242424242424242",
-          salary: "20000",
-          designation: "Developer",
-          isVerfied: false,
-          isFired: false,
-          CreatedTime,
-        };
-        axiosPublic.post("/users", userInfo).then((res) => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Login Success",
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            navigate(location?.state ? location?.state : "/");
+        const email = googleUser?.email;
+
+        // Check if the user is fired
+        axiosPublic.get(`/users/isFired/${email}`)
+          .then(response => {
+            if (response.data?.isFired) {
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Login failed",
+                text: "You have been fired",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              logOut()
+              return;
+            } else {
+              const userInfo = {
+                name: googleUser?.displayName,
+                email: googleUser?.email,
+                role: "Employee",
+                photoURL: googleUser?.photoURL,
+                bank_account_no: "4242424242424242",
+                salary: "20000",
+                designation: "Developer",
+                isVerfied: false,
+                isFired: false,
+                CreatedTime,
+              };
+
+              axiosPublic.post("/users", userInfo).then((res) => {
+                Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "Login Success",
+                  showConfirmButton: false,
+                  timer: 1500,
+                }).then(() => {
+                  navigate(location?.state ? location?.state : "/");
+                });
+              });
+            }
+          })
+          .catch((error) => {
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "Login failed",
+              text: `${error.message}`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
           });
-        });
       })
       .catch((error) => {
         Swal.fire({
