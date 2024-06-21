@@ -10,11 +10,16 @@ import { RxCross1 } from "react-icons/rx";
 import { LiaHireAHelper } from "react-icons/lia";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import { FaMoneyCheck } from "react-icons/fa";
+import { useState } from "react";
 
 const AllEmployeeList = () => {
   const [allEmployeesData, refetch] = UseAllEmployees();
   //   console.log(allEmployeesData);
   const axiosSecure = useAxiosSecure();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [salary,setSalary]= useState(0)
   // handle make hr
   const handleMakeHr = (rowInfo) => {
     // console.log(rowInfo.row.original);
@@ -45,34 +50,67 @@ const AllEmployeeList = () => {
     });
   };
 
-  const handleFire = (rowInfo) =>{
+  const handleFire = (rowInfo) => {
     const id = rowInfo?.row?.original?._id;
     const fired = rowInfo?.row?.original?.isFired;
-    console.log(id,fired)
+    console.log(id, fired);
     Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Fire!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axiosSecure.patch(`/employees/fire/${id}`, { fired }).then((res) => {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Role Changed Successfully",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            refetch();
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Fire!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/employees/fire/${id}`, { fired }).then((res) => {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Role Changed Successfully",
+            showConfirmButton: false,
+            timer: 1500,
           });
-        }
-      });
-  }
+          refetch();
+        });
+      }
+    });
+  };
 
+  const handleSalary = (rowInfo) => {
+    setSelectedEmployee(rowInfo.row?.original);
+    setModalOpen(true);
+  };
+  const handleNewSalary = (e) => {
+    e.preventDefault();
+    const newSalary = e.target.newSalary.value;
+    console.log(newSalary);
+    const previousSalary = parseInt(selectedEmployee.salary);
+    console.log(previousSalary);
+    console.log(selectedEmployee)
+    if (newSalary < previousSalary) {
+      Swal.fire({
+        title: "Error",
+        text: "New salary must be more than previous salary",
+        icon: "error",
+      });
+    }
+    else{
+        axiosSecure.patch(`/employee/salary/${selectedEmployee?._id}`, {newSalary})
+        .then(res=>{
+            if(res.data?.modifiedCount > 0){
+                Swal.fire({
+                    title: "Updated",
+                    text: `New updated salary is : ${newSalary}`,
+                    icon: "success",
+                  });
+                  refetch()
+                  setModalOpen(false)
+            }
+        })
+    }
+  };
   // table
   const columns = [
     {
@@ -115,11 +153,13 @@ const AllEmployeeList = () => {
       header: "Fire",
       cell: (props) => {
         const isFired = props.row.original.isFired;
-        console.log(isFired);
+        // console.log(isFired);
         return (
           <div>
             {isFired ? (
-              <div><p className=" text-red-500 font-medium ml-2">Fired</p></div>
+              <div>
+                <p className=" text-red-500 font-medium ml-2">Fired</p>
+              </div>
             ) : (
               <div>
                 <button
@@ -127,7 +167,7 @@ const AllEmployeeList = () => {
                   onClick={() => handleFire(props)}
                   disabled={isFired}
                 >
-                 <RxCross1 className="text-lg text-red-500 font-bold" />
+                  <RxCross1 className="text-lg text-red-500 font-bold" />
                 </button>
               </div>
             )}
@@ -138,7 +178,16 @@ const AllEmployeeList = () => {
     {
       accessorKey: "salary",
       header: "Adjust Salary",
-      cell: (props) => <p>{props.getValue()}</p>,
+      cell: (props) => {
+        return (
+          <button
+            className="btn ml-5"
+            onClick={() => handleSalary(props)}
+          >
+            <FaMoneyCheck className="text-lg font-bold" />
+          </button>
+        );
+      },
     },
   ];
   const table = useReactTable({
@@ -174,6 +223,48 @@ const AllEmployeeList = () => {
           </tbody>
         </table>
       </div>
+      {/* modal */}
+      {modalOpen && (
+        <dialog
+          id="my_modal_5"
+          className="modal modal-bottom sm:modal-middle"
+          open
+        >
+          <div className="modal-box border-2 bg-custom_grey">
+            <h3 className="font-bold text-xl">
+              Current Salary : {selectedEmployee?.salary}
+            </h3>
+
+            <form
+              className="mt-5 flex items-center gap-2"
+              onSubmit={handleNewSalary}
+            >
+              <input
+                type="number"
+                name="newSalary"
+                placeholder="Enter New Salary"
+                className="w-full py-2.5 px-3 rounded-lg border-2 drop-shadow-sm"
+              />
+              <div className="">
+                <input
+                  type="submit"
+                  className="btn  bg-custom_Dark text-white px-5"
+                  value="Update"
+                />
+              </div>
+            </form>
+            {/* <label htmlFor="month" className="block mb-2">New Salary:</label>   */}
+            <div className="modal-action flex justify-center">
+              <button
+                className="btn bg-custom_Dark px-5 text-white"
+                onClick={() => setModalOpen(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
     </div>
   );
 };
