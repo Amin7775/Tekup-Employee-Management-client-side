@@ -12,14 +12,14 @@ import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 
 const AllEmployeeList = () => {
-  const [allEmployeesData,refetch] = UseAllEmployees();
-  console.log(allEmployeesData);
-    const axiosSecure = useAxiosSecure()
+  const [allEmployeesData, refetch] = UseAllEmployees();
+  //   console.log(allEmployeesData);
+  const axiosSecure = useAxiosSecure();
   // handle make hr
   const handleMakeHr = (rowInfo) => {
     // console.log(rowInfo.row.original);
-    const id = rowInfo?.row?.original?._id
-    console.log(id)
+    const id = rowInfo?.row?.original?._id;
+    // console.log(id);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -30,21 +30,48 @@ const AllEmployeeList = () => {
       confirmButtonText: "Yes, make HR!",
     }).then((result) => {
       if (result.isConfirmed) {
-        const isHR = 'HR'
-        axiosSecure.patch(`/employees/${id}`,{isHR})
-        .then(res=>{
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Role Changed Successfully",
-                showConfirmButton: false,
-                timer: 1500
-              });
-            refetch();
-        })
+        const isHR = "HR";
+        axiosSecure.patch(`/employees/${id}`, { isHR }).then((res) => {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Role Changed Successfully",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          refetch();
+        });
       }
     });
   };
+
+  const handleFire = (rowInfo) =>{
+    const id = rowInfo?.row?.original?._id;
+    const fired = rowInfo?.row?.original?.isFired;
+    console.log(id,fired)
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Fire!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosSecure.patch(`/employees/fire/${id}`, { fired }).then((res) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Role Changed Successfully",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            refetch();
+          });
+        }
+      });
+  }
 
   // table
   const columns = [
@@ -86,7 +113,27 @@ const AllEmployeeList = () => {
     {
       accessorKey: "isFired",
       header: "Fire",
-      cell: (props) => <p>{props.getValue()}</p>,
+      cell: (props) => {
+        const isFired = props.row.original.isFired;
+        console.log(isFired);
+        return (
+          <div>
+            {isFired ? (
+              <div><p className=" text-red-500 font-medium ml-2">Fired</p></div>
+            ) : (
+              <div>
+                <button
+                  className="btn"
+                  onClick={() => handleFire(props)}
+                  disabled={isFired}
+                >
+                 <RxCross1 className="text-lg text-red-500 font-bold" />
+                </button>
+              </div>
+            )}
+          </div>
+        );
+      },
     },
     {
       accessorKey: "salary",
