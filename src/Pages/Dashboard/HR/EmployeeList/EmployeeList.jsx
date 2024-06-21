@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { Link } from "react-router-dom";
 // stripe key
 const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_PK)
 
@@ -150,9 +151,11 @@ const EmployeeList = () => {
       accessorKey: "details",
       header: "Details",
       cell: (props) => (
+        <Link to={`employee-detail/${props?.row?.original?._id}`}>
         <p onClick={() => handleDetails(props)} className="btn">
           Details
         </p>
+        </Link>
       ),
     },
   ];
