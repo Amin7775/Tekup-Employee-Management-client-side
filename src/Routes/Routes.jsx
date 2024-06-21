@@ -13,6 +13,7 @@ import WorkSheet from "../Pages/Dashboard/Employee/WorkSheet/WorkSheet";
 import ContactUsMessages from "../Pages/Dashboard/Admin/ContactUsMessages/ContactUsMessages";
 import EmployeeDetails from "../Pages/Dashboard/HR/EmployeeDetails/EmployeeDetails";
 import WorkProgress from "../Pages/Dashboard/HR/WorkProgress/WorkProgress";
+import AllEmployeeList from "../Pages/Dashboard/Admin/AllEmployeeList/AllEmployeeList";
 
 const router = createBrowserRouter([
     {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
         {
           path:"contact-us-messages",
           element:<ContactUsMessages></ContactUsMessages>
+        },
+        {
+          path:"all-employee-list",
+          element:<AllEmployeeList></AllEmployeeList>
         }
       ]
     }
