@@ -19,7 +19,7 @@ const AllEmployeeList = () => {
   const axiosSecure = useAxiosSecure();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const [salary,setSalary]= useState(0)
+  const [tableView, setTableView] = useState(true);
   // handle make hr
   const handleMakeHr = (rowInfo) => {
     // console.log(rowInfo.row.original);
@@ -85,31 +85,36 @@ const AllEmployeeList = () => {
   const handleNewSalary = (e) => {
     e.preventDefault();
     const newSalary = e.target.newSalary.value;
-    console.log(newSalary);
+    // console.log(newSalary);
     const previousSalary = parseInt(selectedEmployee.salary);
-    console.log(previousSalary);
-    console.log(selectedEmployee)
+    // console.log(previousSalary);
+    // console.log(selectedEmployee)
     if (newSalary < previousSalary) {
       Swal.fire({
         title: "Error",
         text: "New salary must be more than previous salary",
         icon: "error",
       });
+    } else {
+      axiosSecure
+        .patch(`/employee/salary/${selectedEmployee?._id}`, { newSalary })
+        .then((res) => {
+          if (res.data?.modifiedCount > 0) {
+            Swal.fire({
+              title: "Updated",
+              text: `New updated salary is : ${newSalary}`,
+              icon: "success",
+            });
+            refetch();
+            setModalOpen(false);
+          }
+        });
     }
-    else{
-        axiosSecure.patch(`/employee/salary/${selectedEmployee?._id}`, {newSalary})
-        .then(res=>{
-            if(res.data?.modifiedCount > 0){
-                Swal.fire({
-                    title: "Updated",
-                    text: `New updated salary is : ${newSalary}`,
-                    icon: "success",
-                  });
-                  refetch()
-                  setModalOpen(false)
-            }
-        })
-    }
+  };
+
+  //   handle view
+  const handleView = () => {
+    setTableView(!tableView);
   };
   // table
   const columns = [
@@ -180,10 +185,7 @@ const AllEmployeeList = () => {
       header: "Adjust Salary",
       cell: (props) => {
         return (
-          <button
-            className="btn ml-5"
-            onClick={() => handleSalary(props)}
-          >
+          <button className="btn ml-5" onClick={() => handleSalary(props)}>
             <FaMoneyCheck className="text-lg font-bold" />
           </button>
         );
@@ -199,29 +201,82 @@ const AllEmployeeList = () => {
   return (
     <div className="min-h-screen">
       <DashboardHeader text={"All Employees"}></DashboardHeader>
-      <div className="overflow-auto w-full">
-        <table className="table w-full border">
-          <thead className="w-full">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr className="bg-custom_grey text-lg" key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th key={header.id}>{header.column.columnDef.header}</th>
+      <div className="overflow-auto w-full mt-16">
+        <div className="flex justify-end px-5">
+          <button
+            onClick={handleView}
+            className="btn my-5 bg-custom_Dark text-white hover:bg-custom_Dark transform hover:scale-105"
+          >
+            Change View
+          </button>
+        </div>
+        {tableView ? (
+          <div>
+            <table className="table w-full border">
+              <thead className="w-full">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr className="bg-custom_grey text-lg" key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th key={header.id}>{header.column.columnDef.header}</th>
+                    ))}
+                  </tr>
                 ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.map((row) => (
+                  <tr key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
                 ))}
-              </tr>
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 md:gap-6 lg:gap-10">
+            {allEmployeesData?.map((singleEmployeeData) => (
+              <div
+                key={singleEmployeeData._id}
+                className="card bg-base-100 drop-shadow-sm border"
+              >
+                <figure>
+                  <img
+                    src={singleEmployeeData.photoURL}
+                    className="h-80 w-full object-cover"
+                    alt="image"
+                  />
+                </figure>
+                <div className="card-body">
+                  <h2 className="card-title">{singleEmployeeData.name}</h2>
+                  <div className="space-y-1">
+                    <p>
+                      <span className="font-medium">Email: </span>
+                      {singleEmployeeData.email}
+                    </p>
+                    <p>
+                      <span className="font-medium">Designation: </span>
+                      {singleEmployeeData.designation}
+                    </p>
+                    <p>
+                      <span className="font-medium">Role: </span>
+                      {singleEmployeeData.role}
+                    </p>
+                    <p>
+                      <span className="font-medium">salary: </span>
+                      {singleEmployeeData.salary}
+                    </p>
+                  </div>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        )}
       </div>
       {/* modal */}
       {modalOpen && (
