@@ -15,9 +15,11 @@ const Navbar = () => {
       <li>
         <NavLink to={"/contact-us"}>Contact Us</NavLink>
       </li>
-      {
-        user && <li><NavLink to={"/dashboard/home"}>Dashboard</NavLink></li>
-      }
+      {user && (
+        <li>
+          <NavLink to={"/dashboard/home"}>Dashboard</NavLink>
+        </li>
+      )}
     </>
   );
 
@@ -62,9 +64,9 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <a className="md:btn md:btn-ghost">
+        <Link to={"/"} className="md:btn md:btn-ghost">
           <img className="w-[70%] md:w-full" src={Logoimg} alt="" />
-        </a>
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 text-lg font-bold space-x-2">
@@ -113,13 +115,16 @@ const Navbar = () => {
         </div>
         {user ? (
           <Link to={"/"}>
-            <p onClick={handleLogout} className="btn bg-custom_primary_color text-white px-6 h-full text-lg">
+            <p
+              onClick={handleLogout}
+              className="btn bg-custom_primary_color text-white px-6 h-full text-lg hover:bg-custom_Dark transition-all duration-300 ease-in-out transform hover:scale-105"
+            >
               Logout
             </p>
           </Link>
         ) : (
           <Link to={"/login"}>
-            <p className="btn bg-custom_primary_color text-white px-6 h-full text-lg">
+            <p className="btn bg-custom_primary_color text-white px-6 h-full text-lg hover:bg-custom_Dark transition-all duration-300 ease-in-out transform hover:scale-105">
               Login
             </p>
           </Link>

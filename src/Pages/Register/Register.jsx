@@ -85,13 +85,13 @@ const Register = () => {
         imageUrl = data.data.url;
         setSuccess(true);
       } catch (error) {
-        console.error("Error uploading image:", error);
+        // console.error("Error uploading image:", error);
         setSuccess(false);
       }
     }
     // now if imgURL data is success , send data to
     if (success) {
-      console.log(imageUrl);
+      // console.log(imageUrl);
       createUser(email, password)
         .then((res) => {
           updateUser(name, imageUrl).then((result) => {
@@ -115,7 +115,7 @@ const Register = () => {
                 CreatedTime,
               };
               axiosPublic.post("/users", userInfo).then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 navigate(location?.state ? location?.state : "/");
               });
             });
@@ -132,7 +132,7 @@ const Register = () => {
           });
         });
     } else {
-      console.log("Error");
+      // console.log("Error");
     }
   };
 
