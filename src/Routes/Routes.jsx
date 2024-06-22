@@ -14,11 +14,13 @@ import ContactUsMessages from "../Pages/Dashboard/Admin/ContactUsMessages/Contac
 import EmployeeDetails from "../Pages/Dashboard/HR/EmployeeDetails/EmployeeDetails";
 import WorkProgress from "../Pages/Dashboard/HR/WorkProgress/WorkProgress";
 import AllEmployeeList from "../Pages/Dashboard/Admin/AllEmployeeList/AllEmployeeList";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
     {
       path: "/",
       element: <RootLayout></RootLayout>,
+      errorElement:<ErrorPage></ErrorPage>,
       children: [
         {
             path: "/",
@@ -41,6 +43,7 @@ const router = createBrowserRouter([
     {
       path:'dashboard',
       element:<PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
+      errorElement:<ErrorPage></ErrorPage>,
       children:[
         // any user route
         {

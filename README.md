@@ -2,8 +2,8 @@
 
 ## Project Link : [https://tekup-a12.web.app/]
 
-### Admin Email : [tekupAdmin@gmail.com]
-### Admin Password : [tekup@Admincom]
+### Admin Email : [ tekupAdmin@gmail.com ]
+### Admin Password : [ tekup@Admin ]
 
 
 | Built with    |
@@ -49,5 +49,5 @@ Tekup is an employee management system designed for a company to monitor employe
 
 ### Sample Employees and Hr Executives
 
-- Hr Executive Email and Password : [tekuphr@gmail.com] , [tekup@HR]
-- Employee Email and Password : [tekupemployee@gmail.com] , [tekup@Employee]
+- Hr Executive Email and Password : [ tekuphr@gmail.com ] , [ tekup@HR ]
+- Employee Email and Password : [ tekupemployee@gmail.com ] , [ tekup@Employee ]
