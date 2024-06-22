@@ -6,6 +6,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { Helmet } from "react-helmet-async";
 
 const WorkProgress = () => {
   const axiosSecure = useAxiosSecure();
@@ -80,6 +81,9 @@ const WorkProgress = () => {
   };
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Tekup - Work Progress</title>
+      </Helmet>
       <DashboardHeader text={"Work Progress"}></DashboardHeader>
       {/* form */}
       <div className="bg-custom_grey py-6 px-5 md:px-10 border border-b-0">

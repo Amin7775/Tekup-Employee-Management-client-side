@@ -13,6 +13,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { Link } from "react-router-dom";
 import DashboardHeader from "../../../../Components/DashBoardHeader/DashboardHeader";
+import { Helmet } from "react-helmet-async";
 // stripe key
 const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_PK)
 
@@ -163,6 +164,9 @@ const EmployeeList = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Tekup - Employee List</title>
+      </Helmet>
       <DashboardHeader text={"Employee List"}></DashboardHeader>
       <div className="overflow-auto w-full">
         <table className="table w-full border">

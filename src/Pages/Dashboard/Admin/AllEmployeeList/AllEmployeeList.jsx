@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { FaMoneyCheck } from "react-icons/fa";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const AllEmployeeList = () => {
   const [allEmployeesData, refetch] = UseAllEmployees();
@@ -200,6 +201,9 @@ const AllEmployeeList = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Tekup - All Employee List</title>
+      </Helmet>
       <DashboardHeader text={"All Employees"}></DashboardHeader>
       <div className="overflow-auto w-full">
         <div className="flex justify-end px-5">

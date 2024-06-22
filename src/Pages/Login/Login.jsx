@@ -4,6 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import moment from "moment";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const { googleLogin, loginUser, logOut } = useAuth();
@@ -140,6 +141,9 @@ const Login = () => {
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 pb-12 pt-32 lg:px-8 bg-page_bg dark:bg-dark_page_bg">
+      <Helmet>
+        <title>Tekup - Login</title>
+      </Helmet>
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <div className="">
           <img className="mx-auto h-10 w-auto" src={logoimg} alt="Tekup" />

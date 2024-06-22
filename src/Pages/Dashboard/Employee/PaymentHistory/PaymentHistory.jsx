@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import DashboardHeader from "../../../../Components/DashBoardHeader/DashboardHeader";
+import { Helmet } from "react-helmet-async";
 
 const PaymentHistory = () => {
   const [currentPage, setCuerrentPage] = useState(0);
@@ -67,6 +68,9 @@ const PaymentHistory = () => {
   });
   return (
     <div className="">
+      <Helmet>
+        <title>Tekup - Payment History</title>
+      </Helmet>
       <DashboardHeader text={"Payment History"}></DashboardHeader>
       <div className="overflow-auto w-full">
         <table className="table w-full border">

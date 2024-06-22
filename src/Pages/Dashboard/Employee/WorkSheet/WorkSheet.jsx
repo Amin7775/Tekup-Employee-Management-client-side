@@ -7,6 +7,7 @@ import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import useWorkData from "../../../../hooks/useWorkData";
+import { Helmet } from "react-helmet-async";
 
 const WorkSheet = () => {
   const [worksData, refetch] = useWorkData();
@@ -140,6 +141,9 @@ const WorkSheet = () => {
   });
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Tekup - Work Sheet</title>
+      </Helmet>
       <DashboardHeader text={"Work Sheet"}></DashboardHeader>
       {/* container */}
       <div className="grid grid-cols-1 gap-14">

@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 import moment from "moment";
+import { Helmet } from "react-helmet-async";
 
 // image hosting
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
@@ -180,6 +181,9 @@ const Register = () => {
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 pb-12 pt-32 lg:px-8  ">
+      <Helmet>
+        <title>Tekup - Register</title>
+      </Helmet>
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <div className="">
           <img className="mx-auto h-10 w-auto" src={logoimg} alt="Tekup" />
