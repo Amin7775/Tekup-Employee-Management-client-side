@@ -7,7 +7,7 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid } from "recharts";
 
 const EmployeeDetails = () => {
   const { employeeID } = useParams();
-  console.log(employeeID);
+  // console.log(employeeID);
   // employee details - single user info
   const axiosSecure = useAxiosSecure();
   //   user info fetch
@@ -22,7 +22,7 @@ const EmployeeDetails = () => {
       return res.data;
     },
   });
-  console.log(singleUser);
+  // console.log(singleUser);
   //   payment info fetch
   const { data: singleUserPayment = [] } = useQuery({
     queryKey: ["singleUserPayment"],
@@ -31,7 +31,7 @@ const EmployeeDetails = () => {
       return res.data;
     },
   });
-  console.log(singleUserPayment);
+  // console.log(singleUserPayment);
   const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red", "pink"];
 
   const data = [

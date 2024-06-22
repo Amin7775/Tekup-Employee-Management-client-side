@@ -15,11 +15,10 @@ const Navbar = () => {
       <li>
         <NavLink to={"/contact-us"}>Contact Us</NavLink>
       </li>
-      {user && (
-        <li>
-          <NavLink to={"/dashboard/home"}>Dashboard</NavLink>
-        </li>
-      )}
+
+      <li>
+        <NavLink to={"/dashboard/home"}>Dashboard</NavLink>
+      </li>
     </>
   );
 
@@ -123,11 +122,18 @@ const Navbar = () => {
             </p>
           </Link>
         ) : (
+          <>
           <Link to={"/login"}>
             <p className="btn bg-custom_primary_color text-white px-6 h-full text-lg hover:bg-custom_Dark transition-all duration-300 ease-in-out transform hover:scale-105">
               Login
             </p>
           </Link>
+          <Link to={"/register"}>
+            <p className="ml-2 btn bg-custom_primary_color text-white px-6 h-full text-lg hover:bg-custom_Dark transition-all duration-300 ease-in-out transform hover:scale-105">
+              Register
+            </p>
+          </Link>
+          </>
         )}
       </div>
     </div>
