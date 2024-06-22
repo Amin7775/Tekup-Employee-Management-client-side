@@ -2,7 +2,7 @@
 
 ## Project Link : [ https://tekup-a12.web.app/ ]
 
-### Admin Email : [ tekupAdmin@gmail.com ]
+### Admin Email : [ tekupadmin@gmail.com ]
 ### Admin Password : [ tekup@Admin ]
 
 ##
