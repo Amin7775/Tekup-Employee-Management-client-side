@@ -36,7 +36,7 @@ const Footer = () => {
                 placeholder="username@site.com"
                 className="input input-bordered join-item text-lg"
               />
-              <button className="btn bg-custom_primary_color text-white join-item text-lg">
+              <button className="btn bg-custom_primary_color text-white join-item text-lg hover:bg-custom_Dark transition-all duration-300 ease-in-out transform hover:scale-105">
                 Subscribe
               </button>
             </div>

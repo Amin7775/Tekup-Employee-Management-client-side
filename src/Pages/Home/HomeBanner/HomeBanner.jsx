@@ -1,5 +1,6 @@
 import { MdArrowOutward } from "react-icons/md";
 import bannerImg from "./../../../assets/images/Banner/Banner.png";
+import { Link } from "react-router-dom";
 
 const HomeBanner = () => {
   return (
@@ -22,9 +23,11 @@ const HomeBanner = () => {
           </p>
           {/* btn */}
           <div className="mt-6 flex justify-center lg:justify-start">
+            <Link to={"/contact-us"}>
             <button className="bg-white text-black text-xl lg:text-2xl px-6 py-3 h-full border-0 rounded-sm flex items-center gap-1 font-medium hover:bg-custom_Dark hover:text-white transition-all duration-300 ease-in-out hover:transform hover:scale-105">
               Contact Us <MdArrowOutward className="mt-1" />
             </button>
+            </Link>
           </div>
         </div>
       </div>

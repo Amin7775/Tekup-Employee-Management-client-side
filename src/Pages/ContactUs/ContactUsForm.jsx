@@ -48,7 +48,7 @@ const ContactUsForm = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 my-1 lg:my-20 gap-5 lg:gap-20">
+    <div className="grid grid-cols-1 lg:grid-cols-2 my-1 lg:my-16 gap-5 lg:gap-20">
       {/* text */}
       <div className="flex flex-col justify-center">
         <h1 className="text-3xl md:text-5xl font-semibold">
