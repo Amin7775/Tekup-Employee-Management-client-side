@@ -6,7 +6,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import moment from "moment";
 
 const Login = () => {
-  const { googleLogin, loginUser,logOut } = useAuth();
+  const { googleLogin, loginUser, logOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
@@ -74,8 +74,9 @@ const Login = () => {
         const email = googleUser?.email;
 
         // Check if the user is fired
-        axiosPublic.get(`/users/isFired/${email}`)
-          .then(response => {
+        axiosPublic
+          .get(`/users/isFired/${email}`)
+          .then((response) => {
             if (response.data?.isFired) {
               Swal.fire({
                 position: "center",
@@ -85,7 +86,7 @@ const Login = () => {
                 showConfirmButton: false,
                 timer: 1500,
               });
-              logOut()
+              logOut();
               return;
             } else {
               const userInfo = {

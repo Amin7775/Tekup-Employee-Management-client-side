@@ -201,7 +201,7 @@ const AllEmployeeList = () => {
   return (
     <div className="min-h-screen">
       <DashboardHeader text={"All Employees"}></DashboardHeader>
-      <div className="overflow-auto w-full mt-16">
+      <div className="overflow-auto w-full">
         <div className="flex justify-end px-5">
           <button
             onClick={handleView}

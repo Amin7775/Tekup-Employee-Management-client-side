@@ -12,6 +12,7 @@ import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { Link } from "react-router-dom";
+import DashboardHeader from "../../../../Components/DashBoardHeader/DashboardHeader";
 // stripe key
 const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_PK)
 
@@ -57,7 +58,7 @@ const EmployeeList = () => {
   //   handle verified
   const toggleVerified = (userId, isVerfied) => {
     axiosSecure.patch(`/users/${userId}`, { isVerfied }).then((res) => {
-      console.log(res);
+      // console.log(res);
       refetch();
     });
   };
@@ -67,13 +68,7 @@ const EmployeeList = () => {
     setSelectedEmployee(employee);
     setModalOpen(true);
   };
-  // const handlePaySubmit = () => {
-  //   Handle the payment logic here, e.g., update the database, etc.
-  //   console.log(
-  //     `Paying ${selectedEmployee.salary} to ${selectedEmployee.name} for ${selectedMonth}/${selectedYear}`
-  //   );
-  //   setModalOpen(false);
-  // };
+  
 
   const columns = [
     {
@@ -168,6 +163,7 @@ const EmployeeList = () => {
 
   return (
     <div>
+      <DashboardHeader text={"Employee List"}></DashboardHeader>
       <div className="overflow-auto w-full">
         <table className="table w-full border">
           <thead>
