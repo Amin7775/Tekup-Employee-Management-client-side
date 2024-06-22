@@ -7,7 +7,7 @@ import DashboardHeader from "../../../../Components/DashBoardHeader/DashboardHea
 import UseAllEmployees from "../../../../hooks/UseAllEmployees";
 import { MdDone } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
-import { LiaHireAHelper } from "react-icons/lia";
+// import { LiaHireAHelper } from "react-icons/lia";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { FaMoneyCheck } from "react-icons/fa";
@@ -68,7 +68,7 @@ const AllEmployeeList = () => {
           Swal.fire({
             position: "center",
             icon: "success",
-            title: "Role Changed Successfully",
+            title: "Fired!",
             showConfirmButton: false,
             timer: 1500,
           });
