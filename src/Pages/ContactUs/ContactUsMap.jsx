@@ -2,7 +2,7 @@ import React from "react";
 
 const ContactUsMap = () => {
   return (
-    <div className="pb-10">
+    <div className="pb-10 pt-10 lg:pt-0">
       <div className="border-2 p-3" style={{ width: "100%" }}>
         <iframe
           width="100%"
