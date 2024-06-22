@@ -10,7 +10,7 @@ import { GrInProgress } from "react-icons/gr";
 
 const Dashboard = () => {
   const [user] = useVerifyUser();
-  console.log(user);
+  // console.log(user);
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
       {/* dashboard menu */}

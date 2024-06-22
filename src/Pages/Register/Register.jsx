@@ -19,6 +19,30 @@ const Register = () => {
   const location = useLocation();
   const navigate = useNavigate();
   let CreatedTime = moment().format("MMMM Do YYYY, h:mm:ss a");
+  const [errorMessage, setErrorMessage] = useState("");
+  // Password validation function
+  const validatePassword = (password) => {
+    if (password.length < 6) {
+      return {
+        isValid: false,
+        message: "Password must be at least 6 characters long",
+      };
+    }
+    if (!/[A-Z]/.test(password)) {
+      return {
+        isValid: false,
+        message: "Password must contain at least one capital letter",
+      };
+    }
+    if (!/[!@#$%^&*]/.test(password)) {
+      return {
+        isValid: false,
+        message: "Password must contain at least one special character",
+      };
+    }
+    return { isValid: true, message: "" };
+  };
+
   // console.log(CreatedTime)
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,6 +65,11 @@ const Register = () => {
     //   bankAccountNo,
     //   imageFile,
     // });
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      setErrorMessage(passwordValidation.message);
+      return;
+    }
 
     //  first image hosting
     let imageUrl = "";
@@ -63,44 +92,45 @@ const Register = () => {
     // now if imgURL data is success , send data to
     if (success) {
       console.log(imageUrl);
-      createUser(email, password).then((res) => {
-        updateUser(name, imageUrl).then((result) => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Registration Success",
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            const userInfo = {
-              name,
-              email,
-              role,
-              photoURL: imageUrl,
-              bank_account_no,
-              salary,
-              designation,
-              isVerfied: false,
-              isFired: false,
-              CreatedTime,
-            };
-            axiosPublic.post("/users", userInfo).then((res) => {
-              console.log(res.data);
-              navigate(location?.state ? location?.state : '/')
+      createUser(email, password)
+        .then((res) => {
+          updateUser(name, imageUrl).then((result) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Registration Success",
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              const userInfo = {
+                name,
+                email,
+                role,
+                photoURL: imageUrl,
+                bank_account_no,
+                salary,
+                designation,
+                isVerfied: false,
+                isFired: false,
+                CreatedTime,
+              };
+              axiosPublic.post("/users", userInfo).then((res) => {
+                console.log(res.data);
+                navigate(location?.state ? location?.state : "/");
+              });
             });
           });
-        });
-      })
-      .catch(error=>{
-        Swal.fire({
+        })
+        .catch((error) => {
+          Swal.fire({
             position: "center",
             icon: "error",
             title: "Registration failed",
             text: `${error.message}`,
             showConfirmButton: false,
             timer: 1500,
-          })
-      })
+          });
+        });
     } else {
       console.log("Error");
     }
@@ -108,42 +138,44 @@ const Register = () => {
 
   // google
   const handleGoogle = () => {
-    googleLogin().then((res) => {
-      // console.log(res?.user)
-      const googleUser = res?.user;
-      const userInfo = {
-        name: googleUser?.displayName,
-        email: googleUser?.email,
-        role: "Employee",
-        photoURL: googleUser?.photoURL,
-        bank_account_no: "4242424242424242",
-        salary: "20000",
-        designation: "Developer",
-        isVerfied: false,
-        isFired: false,
-        CreatedTime,
-      };
-      axiosPublic.post("/users", userInfo).then((res) => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Registration Success",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          navigate(location?.state ? location?.state : "/");
-        });
-      });
-    }).catch(error=>{
-        Swal.fire({
+    googleLogin()
+      .then((res) => {
+        // console.log(res?.user)
+        const googleUser = res?.user;
+        const userInfo = {
+          name: googleUser?.displayName,
+          email: googleUser?.email,
+          role: "Employee",
+          photoURL: googleUser?.photoURL,
+          bank_account_no: "4242424242424242",
+          salary: "20000",
+          designation: "Developer",
+          isVerfied: false,
+          isFired: false,
+          CreatedTime,
+        };
+        axiosPublic.post("/users", userInfo).then((res) => {
+          Swal.fire({
             position: "center",
-            icon: "error",
-            title: "Registration failed",
-            text: `${error.message}`,
+            icon: "success",
+            title: "Registration Success",
             showConfirmButton: false,
             timer: 1500,
-          })
-    })
+          }).then(() => {
+            navigate(location?.state ? location?.state : "/");
+          });
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Registration failed",
+          text: `${error.message}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      });
   };
 
   return (
@@ -216,6 +248,9 @@ const Register = () => {
                   required
                   className="block w-full rounded-md border-0 py-3 text-lg text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-custom_blue sm:text-sm sm:leading-6 px-3 "
                 />
+                {errorMessage && (
+                  <p className="mt-2 text-sm text-red-600">{errorMessage}</p>
+                )}
               </div>
             </div>
             {/* role */}
